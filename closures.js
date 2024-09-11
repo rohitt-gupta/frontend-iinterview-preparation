@@ -199,3 +199,103 @@
 
 // Module.publicMethod(); // print public
 // Module.privateMethod(); // ref error
+
+/**
+ * 7. Make this run only once
+ */
+
+// SIMPLE WAY
+// let profile;
+// function starThisRepo() {
+// 	profile = "rohitt-gupta";
+// 	let called = 0;
+// 	return function () {
+// 		if (called > 0) {
+// 			console.log("Already following!");
+// 		} else {
+// 			console.log("Follow me on github: ", profile);
+// 			called++;
+// 		}
+// 	};
+// }
+// const hitFollow = starThisRepo();
+
+// hitFollow();
+// hitFollow();
+// hitFollow();
+// hitFollow();
+// hitFollow();
+// hitFollow();
+
+// MORE GENERIC WAY
+/**
+ * 8 Make a polyfill for the ONCE functionality.
+ */
+
+// ONCE POLYFILL
+
+// function once(func, context) {
+// 	let ran;
+
+// 	return function () {
+// 		if (func) {
+// 			ran = func.apply(context || this, arguments);
+// 			func = null;
+// 		}
+// 		return ran;
+// 	};
+// }
+
+// const hello = once((a, b, c) => {
+// 	console.log("Hello", a, b, c);
+// });
+
+// hello(1, 2, 3);
+// hello(1, 2, 3);
+// hello(1, 2, 3);
+// hello(1, 2, 3);
+// hello(1, 2, 3);
+
+/**
+ * 9 Implement Caching or memoize function in javascript
+ * if the parameters of the function are same then cache the result and use the same cached result
+ */
+
+function myMemoize(fn, context) {
+	let res = {};
+	return function (...args) {
+		let stringCache = JSON.stringify(args);
+		if (!res[stringCache]) {
+			res[stringCache] = fn.call(context || this, ...args);
+		}
+		return res[stringCache];
+	};
+}
+
+function calculateExpensive(num1, num2) {
+	for (let i = 0; i < 10000000; i++) {}
+	return num1 * num2;
+}
+
+const memoizedCalaulation = myMemoize(calculateExpensive);
+
+console.time("first");
+console.log(memoizedCalaulation(67672, 8787));
+console.timeEnd("first");
+
+// 94633864
+// first: 11.127ms
+
+console.time("second");
+console.log(memoizedCalaulation(67672, 8787));
+console.timeEnd("second");
+
+// 594633864
+// second: 0.14ms
+
+console.time("third");
+console.log(memoizedCalaulation(67672, 8787));
+console.timeEnd("third");
+
+// 594633864
+// third: 0.117ms
