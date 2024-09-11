@@ -1,0 +1,3 @@
+Javascript
+React
+Machine coding
