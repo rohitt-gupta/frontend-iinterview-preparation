@@ -162,7 +162,7 @@
  *
  */
 
-// 1. Promise.all : returns an array of resolved promises but if anyone of them gets rejected it
+// 1. Promise.all : returns an array of resolved promises but if anyone of them gets rejected it stops
 
 // console.log("start");
 // Promise.all([learnJS(), learnReact(), finallyBuild()]).then((res) => {
@@ -335,3 +335,28 @@ Promise.allPolyfill = (promises) => {
 Promise.allPolyfill([learnJS(), learnReact(), finallyBuild()]).then((res) => {
 	console.log(res);
 });
+
+Promise.myAll = function (promises) {
+	return new Promise((resolve, reject) => {
+		const results = [];
+		let completedPromises = 0;
+
+		if (promises.length === 0) {
+			resolve(results);
+			return;
+		}
+
+		promises.forEach((promise, index) => {
+			Promise.resolve(promise)
+				.then((value) => {
+					results[index] = value;
+					completedPromises++;
+
+					if (completedPromises === promises.length) {
+						resolve(results);
+					}
+				})
+				.catch(reject);
+		});
+	});
+};
