@@ -36,22 +36,12 @@ const useTraverseTree = () => {
 			return null;
 		}
 
-		if (tree.isFolder) {
-			const updatedItems = tree.items.filter((item) => {
-				const result = deleteNode(item, nodeId);
-				return result !== null;
-			});
-
-			// If items array changed, return a new object with updated items
-			if (updatedItems.length !== tree.items.length) {
-				return { ...tree, items: updatedItems };
-			}
-		} else {
-			console.log("tree", tree);
+		if (tree.items && tree.items.length > 0) {
+			tree.items = tree.items.map((childNode) => deleteNode(childNode, nodeId));
+			tree.items = tree.items.filter(Boolean);
 		}
 
-		// If we didn't find the node to delete, return the original tree/item
-		return tree;
+		return { ...tree };
 	}
 
 	return { insertNodes, updateNode, deleteNode };
