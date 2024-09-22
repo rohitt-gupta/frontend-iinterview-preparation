@@ -18,7 +18,12 @@ export default function App() {
 		setExplorerData(finalTree);
 	};
 	const handleDeleteNode = (folderId) => {
-		const updatedTree = deleteNode(explorerData, -1, folderId);
+		if (folderId === explorerData.id) {
+			const updatedExplorer = { ...explorer, items: [] };
+			setExplorerData(updatedExplorer);
+			return;
+		}
+		const updatedTree = deleteNode(explorerData, folderId);
 		setExplorerData(updatedTree);
 	};
 	return (

@@ -31,24 +31,27 @@ const useTraverseTree = () => {
 		return { ...tree, items: nextNode };
 	}
 
-	function deleteNode(tree, prevNode, nodeId) {
-		// console.log(tree,nodeId);
+	function deleteNode(tree, nodeId) {
 		if (tree.id === nodeId) {
-			// console.log(tree);
-			const index = prevNode.items.findIndex((item) => {
-				return item.id === nodeId;
-			});
-			// console.log(index);
-			prevNode.items.splice(index, 1);
-			// console.log(tree);
-			return tree;
+			return null;
 		}
 
-		tree.items.map((ob) => {
-			return deleteNode(ob, tree, nodeId);
-		});
+		if (tree.isFolder) {
+			const updatedItems = tree.items.filter((item) => {
+				const result = deleteNode(item, nodeId);
+				return result !== null;
+			});
 
-		return { ...tree };
+			// If items array changed, return a new object with updated items
+			if (updatedItems.length !== tree.items.length) {
+				return { ...tree, items: updatedItems };
+			}
+		} else {
+			console.log("tree", tree);
+		}
+
+		// If we didn't find the node to delete, return the original tree/item
+		return tree;
 	}
 
 	return { insertNodes, updateNode, deleteNode };
