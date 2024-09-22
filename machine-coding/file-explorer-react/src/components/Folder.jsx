@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useTraverseTree from "../hooks/use-traverse-tree";
+import { FolderPlus, FilePlus, Edit, Trash2, File } from "lucide-react";
 
 export default function Folder({
 	handleInsertNode = () => {},
@@ -55,8 +56,79 @@ export default function Folder({
 
 	if (explorer.isFolder) {
 		return (
-			<div style={{ marginBottom: "5px" }}>
+			<div className='folder-container'>
 				<div className='folder' onClick={() => setExpand((curr) => !curr)}>
+					<span>
+						{showUpdateInput.visible ? (
+							<input
+								placeholder={explorer.name}
+								onClick={(e) => e.stopPropagation()}
+								autoFocus
+								type='text'
+								onKeyDown={handleUpdate}
+								name='name'
+								className='updateContainer__input'
+								onBlur={() => setShowUpdateInput({ visible: false })}
+							/>
+						) : (
+							explorer.name
+						)}
+					</span>
+					<div className='folder-actions'>
+						<button
+							onClick={(e) => handleNewFolder(e, true)}
+							data-tooltip='New Folder'
+						>
+							<FolderPlus size={18} />
+						</button>
+						<button
+							onClick={(e) => handleNewFolder(e, false)}
+							data-tooltip='New File'
+						>
+							<FilePlus size={18} />
+						</button>
+						<button onClick={(e) => handleUpdateClick(e)} data-tooltip='Rename'>
+							<Edit size={18} />
+						</button>
+						<button onClick={(e) => onDeleteItem(e)} data-tooltip='Delete'>
+							<Trash2 size={18} />
+						</button>
+					</div>
+				</div>
+				{expand && (
+					<div className='folder-content'>
+						{showInput.visible && (
+							<div className='inputContainer'>
+								<span>{showInput.isFolder ? "📁" : "📄"}</span>
+								<input
+									autoFocus
+									type='text'
+									onKeyDown={onAddFolder}
+									name='heading'
+									className='inputContainer__input'
+									onBlur={() =>
+										setShowInput({ isFolder: null, visible: false })
+									}
+								/>
+							</div>
+						)}
+						{explorer?.items.map((item) => (
+							<Folder
+								handleInsertNode={handleInsertNode}
+								handleUpdateNode={handleUpdateNode}
+								handleDeleteNode={handleDeleteNode}
+								explorer={item}
+								key={item?.id || "item"}
+							/>
+						))}
+					</div>
+				)}
+			</div>
+		);
+	} else {
+		return (
+			<div className='file'>
+				<span>
 					{showUpdateInput.visible ? (
 						<input
 							placeholder={explorer.name}
@@ -69,63 +141,16 @@ export default function Folder({
 							onBlur={() => setShowUpdateInput({ visible: false })}
 						/>
 					) : (
-						<span style={{ textAlign: "left" }}>📁 {explorer.name}</span>
+						explorer.name
 					)}
-					<div>
-						<button onClick={(e) => onDeleteItem(e)}>Delete -</button>
-						<button onClick={(e) => handleNewFolder(e, true)}>Folder +</button>
-						<button onClick={(e) => handleNewFolder(e, false)}>File +</button>
-						<button onClick={(e) => handleUpdateClick(e)}>Update *</button>
-					</div>
-				</div>
-				<div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
-					{showInput.visible && (
-						<div className='inputContainer'>
-							<span>{showInput.isFolder ? "📁" : "📄"}</span>
-							<input
-								autoFocus
-								type='text'
-								onKeyDown={onAddFolder}
-								name='heading'
-								className='inputContainer__input'
-								onBlur={() => setShowInput({ isFolder: null, visible: false })}
-							/>
-						</div>
-					)}
-					{explorer?.items.map((item) => {
-						return (
-							<Folder
-								handleInsertNode={handleInsertNode}
-								handleUpdateNode={handleUpdateNode}
-								handleDeleteNode={handleDeleteNode}
-								explorer={item}
-								key={item?.id || "item"}
-							/>
-						);
-					})}
-				</div>
-			</div>
-		);
-	} else {
-		return (
-			<div className='file'>
-				{showUpdateInput.visible ? (
-					<input
-						placeholder={explorer.name}
-						onClick={(e) => e.stopPropagation()}
-						autoFocus
-						type='text'
-						onKeyDown={handleUpdate}
-						name='name'
-						className='updateContainer__input'
-						onBlur={() => setShowUpdateInput({ visible: false })}
-					/>
-				) : (
-					<span className=''>📄{explorer.name}</span>
-				)}
-				<div>
-					<button onClick={(e) => onDeleteItem(e)}>Delete -</button>
-					<button onClick={(e) => handleUpdateClick(e)}>Update *</button>
+				</span>
+				<div className='file-actions'>
+					<button onClick={(e) => handleUpdateClick(e)} data-tooltip='Rename'>
+						<Edit size={18} />
+					</button>
+					<button onClick={(e) => onDeleteItem(e)} data-tooltip='Delete'>
+						<Trash2 size={18} />
+					</button>
 				</div>
 			</div>
 		);

@@ -1,40 +1,166 @@
 * {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f2f5;
+	padding: 20px;
 }
 
 .folder {
-	margin-top: 6px;
-	background-color: rgb(233, 233, 233);
+	margin-top: 10px;
+	background-color: #ffffff;
 	display: flex;
 	justify-content: space-between;
-	padding: 3px;
-	width: 600px;
+	align-items: center;
+	padding: 10px 15px;
+	width: 100%;
+	max-width: 800px;
 	cursor: pointer;
 	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: background-color 0.2s ease;
+}
+
+.folder:hover {
+	background-color: #f7f7f7;
 }
 
 .folder > span {
-	margin-top: 5px;
-	padding-left: 5px;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	font-size: 16px;
+	color: #333;
 }
 
-.folder > div > button {
-	font-size: 15px;
-	background-color: white;
+.folder > span::before {
+	content: "📁";
+	margin-right: 10px;
+	font-size: 20px;
 }
 
+.folder > div > button,
+.file > div > button {
+	font-size: 14px;
+	background-color: #e0e0e0;
+	border: none;
+	padding: 5px 10px;
+	margin-left: 5px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	position: relative;
+}
+
+.folder > div > button::after,
+.file > div > button::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #333;
+	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
+	font-size: 12px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s, visibility 0.3s;
+}
+
+.folder > div > button:hover::after,
+.file > div > button:hover::after {
+	opacity: 1;
+	visibility: visible;
+}
+
+.folder > div > button:hover,
+.file > div > button:hover {
+	background-color: #d0d0d0;
+}
+
+.inputContainer {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.inputContainer__input,
 .updateContainer__input {
-	z-index: 50;
+	padding: 5px 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-left: 5px;
 }
 
 .file {
-	max-width: 300px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	padding: 8px 15px;
+	margin-top: 5px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.file > span::before {
+	content: "📄";
+	margin-right: 10px;
+	font-size: 18px;
+}
+
+main {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.folder-content {
+	margin-left: 20px;
+	border-left: 1px solid #ccc;
+	padding-left: 10px;
+}
+
+.folder-container {
+	min-width: 600px;
+	margin-bottom: 10px;
+	width: fit-content;
+}
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 80px;
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px;
+	position: absolute;
+	z-index: 1;
+	bottom: 125%;
+	left: 50%;
+	margin-left: -40px;
+	opacity: 0;
+	transition: opacity 0.3s;
+	font-size: 14px;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
 }
