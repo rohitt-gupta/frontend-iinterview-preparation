@@ -6,7 +6,7 @@ import {
 	AiOutlineCloseCircle,
 	AiOutlineClose,
 } from "react-icons/ai";
-import "./Notification.css";
+import "./notifications.css";
 
 const iconStyles: React.CSSProperties = { marginRight: "10px" };
 const icons: Record<string, JSX.Element> = {

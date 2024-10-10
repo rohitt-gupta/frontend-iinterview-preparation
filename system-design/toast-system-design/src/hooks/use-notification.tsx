@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Notification from "../components/notifications";
+import Notification from "../components/Notifications";
 
 // Define the allowed positions
 type PositionType = "bottom-left" | "bottom-right" | "top-left" | "top-right";
