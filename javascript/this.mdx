@@ -1,0 +1,117 @@
+---
+title: 'Understanding the "this" Keyword in JavaScript'
+description: 'Exploring various scenarios and examples of how "this" behaves in JavaScript'
+---
+
+# Understanding the "this" Keyword in JavaScript
+
+The `this` keyword in JavaScript can be tricky. Let's explore its behavior through various examples.
+
+## Basic Object Method
+
+```javascript
+const user = {
+  name: "Rohit",
+  greet() {
+    return `Hello, ${this.name}!`;
+  },
+  farewell: () => {
+    return `GoodBye, ${this.name}!`;
+  },
+};
+
+console.log(user.greet());    // Output: Hello, Rohit!
+console.log(user.farewell()); // Output: GoodBye, undefined!
+```
+
+In this example, `greet()` is a regular function, so `this` refers to the `user` object. However, `farewell` is an arrow function, which doesn't have its own `this` context, so it inherits `this` from the surrounding scope (which is not the `user` object).
+
+## Calculator Object
+
+```javascript
+let calculator = {
+  read() {
+    this.a = +prompt("a = ", 0);
+    this.b = +prompt("b = ", 0);
+  },
+  sum() {
+    return this.a + this.b;
+  },
+  mul() {
+    return this.a * this.b;
+  },
+};
+
+console.log(calculator.sum());
+console.log(calculator.mul());
+```
+
+This calculator object demonstrates how `this` can be used to access and modify object properties.
+
+## Global "this" and Function Context
+
+```javascript
+var length = 4;
+
+function callback() {
+  console.log(this);
+}
+
+const object = {
+  length: 5,
+  method(fn) {
+    fn();
+  },
+};
+
+object.method(callback); // Output: undefined (in strict mode) or global object (in non-strict mode)
+```
+
+This example shows how the value of `this` can change based on how a function is called.
+
+## "this" in Arguments Object
+
+```javascript
+var length = 4;
+
+function callback() {
+  console.log(this.length);
+}
+
+const object = {
+  length: 5,
+  method() {
+    console.log(arguments.length); // Output: 3
+    arguments[0]();
+  },
+};
+
+object.method(callback, 1, 2); // Output: 3
+```
+
+Here, we see how `this` can refer to the `arguments` object when a function is called as a method of the `arguments` object.
+
+## Chaining Methods with "this"
+
+```javascript
+const calc = {
+  total: 0,
+  add(a) {
+    this.total = this.total + a;
+    return this;
+  },
+  multiply(a) {
+    this.total = this.total * a;
+    return this;
+  },
+  subtract(a) {
+    this.total = this.total - a;
+    return this;
+  },
+};
+
+const result = calc.add(10).multiply(5).subtract(30).add(10);
+console.log(result.total);
+```
+
+This example demonstrates how returning `this` allows for method chaining, a common pattern in JavaScript.

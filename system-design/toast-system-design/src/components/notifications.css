@@ -1,0 +1,27 @@
+.notifications {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	width: 100%;
+	justify-items: center;
+}
+
+.success {
+	background-color: green;
+}
+
+.error {
+	background-color: red;
+}
+
+.warning {
+	background-color: yellow;
+}
+
+.info {
+	background-color: blue;
+}
+
+.close-icon {
+	cursor: pointer;
+}

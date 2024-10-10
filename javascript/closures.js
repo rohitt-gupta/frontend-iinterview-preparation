@@ -299,3 +299,15 @@ console.timeEnd("third");
 
 // 594633864
 // third: 0.117ms
+
+var createCounter = function (n) {
+	return function () {
+		return n++;
+	};
+};
+
+const fun = createCounter(10);
+
+console.log(fun());
+console.log(fun());
+console.log(fun());
