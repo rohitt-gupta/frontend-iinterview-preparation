@@ -8,12 +8,13 @@ import {
 } from "react-icons/ai";
 
 import "./notifications.css";
+import { useEffect, useRef } from "react";
 
 const icons = {
-	success: <AiOutlineCheckCircle />,
-	error: <AiOutlineAlert />,
-	info: <AiOutlineInfoCircle />,
-	warning: <AiOutlineWarning />,
+	success: <AiOutlineCheckCircle style={{ marginRight: "4px" }} />,
+	error: <AiOutlineAlert style={{ marginRight: "4px" }} />,
+	info: <AiOutlineInfoCircle style={{ marginRight: "4px" }} />,
+	warning: <AiOutlineWarning style={{ marginRight: "4px" }} />,
 };
 
 const animations = {
@@ -28,11 +29,27 @@ const Notification = ({
 	onClose = () => {},
 	animation = "slide",
 }) => {
+	const notificationRef = useRef(null);
+	useEffect(() => {
+		if (notificationRef.current) {
+			notificationRef.current.focus();
+		}
+	}, []);
+	const ariaRole = type === "error" || type === "warning" ? "alert" : "status";
+	const ariaLive =
+		type === "error" || type === "warning" ? "assertive" : "polite";
 	return (
-		<div className={`notification ${type} ${animations[animation]}`}>
+		<div
+			className={`notification ${type} ${animations[animation]}`}
+			role={ariaRole}
+			aria-live={ariaLive}
+			ref={notificationRef}
+		>
 			{icons[type]}
 			{message}
-			<AiOutlineClose onClick={onClose} className='close-icon' />
+			<button onClick={onClose} className='closeBtn'>
+				<AiOutlineClose />
+			</button>
 		</div>
 	);
 };
