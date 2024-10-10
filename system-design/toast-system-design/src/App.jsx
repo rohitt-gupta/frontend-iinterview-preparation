@@ -10,9 +10,10 @@ function App() {
 			<button
 				onClick={() => {
 					triggerNotification({
-						duration: 3000,
+						duration: 2000,
 						message: "Notification successfully popped!",
 						type: "success",
+						animation: "pop",
 					});
 				}}
 			>

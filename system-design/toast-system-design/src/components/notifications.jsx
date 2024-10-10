@@ -2,7 +2,7 @@
 import {
 	AiOutlineAlert,
 	AiOutlineCheckCircle,
-	AiOutlineCloseCircle,
+	AiOutlineClose,
 	AiOutlineInfoCircle,
 	AiOutlineWarning,
 } from "react-icons/ai";
@@ -16,12 +16,23 @@ const icons = {
 	warning: <AiOutlineWarning />,
 };
 
-const Notification = ({ type = "success", message, onClose = () => {} }) => {
+const animations = {
+	fade: "fadeIn",
+	pop: "popup",
+	slide: "slideIn",
+};
+
+const Notification = ({
+	type = "success",
+	message,
+	onClose = () => {},
+	animation = "slide",
+}) => {
 	return (
-		<div className={`notifications ${type}`}>
+		<div className={`notification ${type} ${animations[animation]}`}>
 			{icons[type]}
 			{message}
-			<AiOutlineCloseCircle onClick={onClose} className='close-icon' />
+			<AiOutlineClose onClick={onClose} className='close-icon' />
 		</div>
 	);
 };
